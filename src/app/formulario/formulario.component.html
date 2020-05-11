@@ -1,0 +1,46 @@
+
+<div class="container">
+   
+  <div class="row">
+    <div class="col-xs-6">
+      <h4 *ngIf="!editado">Ingrese los datos </h4>
+      <h4 *ngIf="editado">Actualice los datos del país seleccionado</h4>
+      
+     
+       <form [formGroup]="formulario" (ngSubmit)="onSubmit()" >
+         <div class="form-group">
+           <label for="pais">País</label>
+           <input class="form-control" type="text" id="pais" formControlName="country">
+           <label for="cant">Cantidad de infectados</label>
+           <input class="form-control" type="number" id="cant" formControlName="ill">
+           <label for="curados">Cantidad de recuperados</label>
+           <input id="curados" type="number" class="form-control" formControlName="sanos">
+           <label for="dead">Cantidad de fallecidos</label>
+           <input id="dead" type="number" class="form-control" formControlName="muertos">
+         </div>
+         <hr>
+         <div class="form-group">
+           <div class="row">
+           <div class="col-md-2 ">
+            <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid">Guardar</button>
+           </div>
+           <div class="col-md-2">
+           <button type="button" class="btn btn-danger" (click)="onCancelar()">Cancelar</button>
+          </div>
+          
+         </div>  
+         </div>
+         <p *ngIf="guardado && !formulario.touched ">Los datos se guardaron correctamente!</p>
+       
+       </form>  
+       
+  
+    <div routerLinkActive="active">
+    <a routerLink="/list">Ir al listado de países</a>
+   </div>
+
+    </div>
+  
+  </div>
+  <hr>
+  </div>

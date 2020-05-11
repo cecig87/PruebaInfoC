@@ -1,0 +1,39 @@
+<h4>Datos actualizados</h4> 
+<br>
+<div class="row">
+  <div class="col-xs-3">
+       <input id="buscar" class="form-control" type="text" name="search" placeholder="Buscar" [(ngModel)]="buscado" (input)="onSearch()">
+  </div>
+</div>
+<br>
+<table class="table table-bordered">
+  <caption>Listado de paises infectados</caption>
+  <thead>
+    <tr class="bg-info">
+      <th scope="col"> País</th>
+      <th scope="col">Infectados</th>
+      <th scope="col">Recuperados</th> 
+      <th scope="col">Fallecidos</th>
+      <th scope="col">Eliminar</th>
+      <th scope="col">Editar</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let paises of dObtenidos; let i= Index">
+     
+    <tr>
+      
+         <td>{{paises.namePais}}</td>
+         <td>{{paises.cantInfect}}</td>
+         <td>{{paises.cantRecovery}}</td>
+         <td>{{paises.cantDead}}</td>
+         <td><button class="btn btn-danger" type="button" (click)="onEliminar(paises.namePais)">x</button></td>
+         <td><button class="btn btn-default" type="button" (click)="onEditar(paises.namePais)">Editar</button></td>
+     </tr>    
+         
+       
+      
+      
+   
+  
+  </tbody>
+</table>
