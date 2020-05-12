@@ -45,4 +45,4 @@ testem.log
 .DS_Store
 Thumbs.db
 
-http.service.ts
+/src/app/http.service.ts
