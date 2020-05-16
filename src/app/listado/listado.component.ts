@@ -4,6 +4,7 @@ import { Pais } from '../pais.model';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
+
 @Component({
   selector: 'app-listado',
   templateUrl: './listado.component.html',
@@ -15,17 +16,31 @@ dObtenidos: Pais[] =[];
 susbcribirse: Subscription;
 editando = false;
 buscado: string;
+index: number;
+
+datosLista = true;
 
 constructor(private listaServicio: ListaService, private router: Router, private route: ActivatedRoute) { };
 
   ngOnInit() {
-     this.susbcribirse = this.listaServicio.listaPaises.subscribe((listado: Pais[]) =>{this.dObtenidos = listado});
+     this.susbcribirse = this.listaServicio.listaPaises.subscribe((listado: Pais[]) =>{this.dObtenidos = listado; 
+      });
+    this.onControlLista();
+  };
 
+  onControlLista(){
+     if(this.dObtenidos.length === 0){
+      this.datosLista = false;
+     };
   };
 
    onEliminar(pais: string) {
-     const index = this.dObtenidos.findIndex(id =>  {return id.namePais === pais})
-     this.dObtenidos.splice(index, 1)
+      this.index = this.dObtenidos.findIndex(id =>  {return id.namePais === pais});
+   };
+
+   onConfirmar(){   
+      this.dObtenidos.splice(this.index, 1);
+      this.onControlLista();
    };
 
    onEditar(pais: string) {

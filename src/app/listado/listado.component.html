@@ -1,12 +1,16 @@
 <h4>Datos actualizados</h4> 
 <br>
-<div class="row">
+<div *ngIf="!datosLista" class="alert alert-info" role="alert">La lista se encuentra vacía.</div>
+
+<br>
+<div *ngIf="datosLista" class="row">
   <div class="col-xs-3">
        <input id="buscar" class="form-control" type="text" name="search" placeholder="Buscar" [(ngModel)]="buscado" (input)="onSearch()">
   </div>
 </div>
 <br>
-<table class="table table-bordered">
+
+<table *ngIf="datosLista" class="table table-bordered table-hover">
   <caption>Listado de paises infectados</caption>
   <thead>
     <tr class="bg-info">
@@ -14,8 +18,7 @@
       <th scope="col">Infectados</th>
       <th scope="col">Recuperados</th> 
       <th scope="col">Fallecidos</th>
-      <th scope="col">Eliminar</th>
-      <th scope="col">Editar</th>
+      <th scope="col">Acciones</th>
     </tr>
   </thead>
   <tbody *ngFor="let paises of dObtenidos; let i= Index">
@@ -26,14 +29,32 @@
          <td>{{paises.cantInfect}}</td>
          <td>{{paises.cantRecovery}}</td>
          <td>{{paises.cantDead}}</td>
-         <td><button class="btn btn-danger" type="button" (click)="onEliminar(paises.namePais)">x</button></td>
-         <td><button class="btn btn-default" type="button" (click)="onEditar(paises.namePais)">Editar</button></td>
+         <td><div class="col-xs-2"><button class="btn btn-danger" type="button" data-toggle="modal" data-target="#myModal" (click)="showModal = true; onEliminar(paises.namePais)">x</button></div>
+              <div class="col-xs-2"><button class="btn btn-default" type="button" (click)="onEditar(paises.namePais)">Editar</button></div>
+          
+              <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" [ngClass]="{'show': showModal}">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal = false">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                     <h5 class="modal-title" id="myModalLabel">Eliminar país</h5>
+                   </div>
+                   <div class="modal-body">
+                   <p>¿Está seguro que desea borrar ese país?</p>
+                   </div>
+                   <div class="modal-footer">
+                     <button type="button" class="btn btn-default" data-dismiss="modal" (click)="showModal = false">close</button>
+                     <button type="button" class="btn btn-primary"  (click)="showModal = false; onConfirmar()">Confirmar</button>
+                   </div>
+                  </div>
+                 </div>
+               </div>
+             
+         </td>
      </tr>    
-         
-       
-      
-      
-   
   
   </tbody>
 </table>
