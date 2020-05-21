@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ListadoComponent } from './listado/listado.component';
 import { FormularioComponent } from './formulario/formulario.component';
 import { Routes, RouterModule } from '@angular/router';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 const routes: Routes = [
   {path:'new', component: FormularioComponent},  //despues tratar creando otro componente '/'
   {path:'list', component: ListadoComponent},
@@ -23,6 +23,7 @@ const routes: Routes = [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],

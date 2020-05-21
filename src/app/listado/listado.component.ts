@@ -3,7 +3,8 @@ import { ListaService } from '../lista.service';
 import { Pais } from '../pais.model';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-listado',
@@ -17,7 +18,8 @@ susbcribirse: Subscription;
 editando = false;
 buscado: string;
 index: number;
-
+faTrashAlt = faTrashAlt;
+edit = faEdit;
 datosLista = true;
 
 constructor(private listaServicio: ListaService, private router: Router, private route: ActivatedRoute) { };
