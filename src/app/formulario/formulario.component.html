@@ -22,7 +22,7 @@
          <div class="form-group">
            <div class="row">
            <div class="col-md-2 ">
-            <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid">Guardar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid" data-toggle="modal" data-target="#myModalSaved" (click)="showModal = true">Guardar</button>
            </div>
            <div class="col-md-2">
            <button type="button" class="btn btn-danger" (click)="onCancelar()">Cancelar</button>
@@ -30,11 +30,35 @@
           
          </div>  
          </div>
-         <p *ngIf="guardado && !formulario.touched ">Los datos se guardaron correctamente!</p>
-       
+
+         <div class="modal" id="myModalSaved" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" [ngClass]="{'show': showModal}">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+          
+                <button *ngIf="guardado"type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal = false">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+
+               <button *ngIf="editado"type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal = false; onVolver()">
+                <span aria-hidden="true">&times;</span>
+             </button>
+               <h5 class="modal-title" id="myModalLabel">Guardado</h5>
+             </div>
+             <div class="modal-body">
+             <p *ngIf="guardado">El país se ha almacenado correctamente</p>
+            <p *ngIf="actualizado ">Los datos se han actualizado correctamente</p>
+             </div>
+             
+            </div>
+           </div>
+         </div>
+
+         <!--<p *ngIf="guardado && !formulario.touched ">Los datos se guardaron correctamente!</p>-->
+         
        </form>  
        
-  
+              
     <div routerLinkActive="active">
     <a routerLink="/list">Ir al listado de países</a>
    </div>

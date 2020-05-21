@@ -4,6 +4,7 @@ import { Pais } from '../pais.model';
 import { ListaService } from '../lista.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-formulario',
   templateUrl: './formulario.component.html',
@@ -76,13 +77,19 @@ export class FormularioComponent implements OnInit {
     
     if(this.editado){
       this.listService.updatePais(this.idCountry, datosForm);
-      alert('Datos actualizados correctamente')
-      this.router.navigate(['../../list'], {relativeTo: this.route});
+      //alert('Datos actualizados correctamente')
+      
       this.actualizado = true;
     } else {
        this.listService.agregarPais(datosForm); 
        this.guardado = true; }
        this.formulario.reset(); 
+
+      
+    };
+
+    onVolver(){
+      this.router.navigate(['../../list'], {relativeTo: this.route});
     };
      
    

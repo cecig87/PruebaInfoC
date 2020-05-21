@@ -1,3 +1,9 @@
 input.ng-invalid.ng-touched{
     border: red 1px solid;
+};
+
+.modal.show{
+    display: block;
+    background-color: darkgrey;
+    
 }
