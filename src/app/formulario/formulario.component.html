@@ -4,19 +4,19 @@
   <div class="row">
     <div class="col-xs-6">
       <h4 *ngIf="!editado">Ingrese los datos </h4>
-      <h4 *ngIf="editado">Actualice los datos del país seleccionado</h4>
-      
+     <h4 *ngIf="editado">Actualice los datos del país seleccionado</h4>
+      <!--<button (click)="datosForm()">Formulario editar</button>-->
      
        <form [formGroup]="formulario" (ngSubmit)="onSubmit()" >
          <div class="form-group">
            <label for="pais">País</label>
-           <input class="form-control" type="text" id="pais" formControlName="country">
+           <input class="form-control" type="text" id="pais" formControlName="name">
            <label for="cant">Cantidad de infectados</label>
-           <input class="form-control" type="number" id="cant" formControlName="ill">
+           <input class="form-control" type="number" id="cant" formControlName="infectados">
            <label for="curados">Cantidad de recuperados</label>
-           <input id="curados" type="number" class="form-control" formControlName="sanos">
+           <input id="curados" type="number" class="form-control" formControlName="recuperados">
            <label for="dead">Cantidad de fallecidos</label>
-           <input id="dead" type="number" class="form-control" formControlName="muertos">
+           <input id="dead" type="number" class="form-control" formControlName="fallecidos">
          </div>
          <hr>
          <div class="form-group">
@@ -43,11 +43,13 @@
                <button *ngIf="editado"type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal = false; onVolver()">
                 <span aria-hidden="true">&times;</span>
              </button>
-               <h5 class="modal-title" id="myModalLabel">Guardado</h5>
+               <h5 *ngIf="!repetido" class="modal-title" id="myModalLabel">Guardado</h5>
+               <h5 *ngIf="repetido" class="modal-title" id="myModalLabel">Mensaje</h5>
              </div>
              <div class="modal-body">
-             <p *ngIf="guardado">El país se ha almacenado correctamente</p>
-            <p *ngIf="actualizado ">Los datos se han actualizado correctamente</p>
+             <p *ngIf="guardado && !repetido">El país se ha almacenado correctamente.</p>
+            <p *ngIf="actualizado && !repetido">Los datos se han actualizado correctamente.</p>
+            <p *ngIf="repetido">No se almacenaron los cambios porque este país ya existe.</p>
              </div>
              
             </div>

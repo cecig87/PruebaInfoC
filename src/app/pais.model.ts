@@ -1,15 +1,16 @@
 export class Pais {
    
-   public namePais: string;
-    public cantInfect: number;
-    public cantRecovery: number;
-    public cantDead: number;
-     id?: string;
+   public name: string;
+    public infectados: number;
+    public recuperados: number;
+    public fallecidos: number;
+    public idPais?: number;
     
-   constructor(namePais: string, cantInfect: number, cantRecovery: number, cantDead: number) {
-     this.namePais = namePais;
-     this.cantInfect = cantInfect;
-     this.cantRecovery = cantRecovery;
-     this.cantDead = cantDead
+   constructor(name: string, infectados: number, recuperados: number, fallecidos: number, ){//idPais?: number) {
+     this.name = name;
+     this.infectados = infectados;
+     this.recuperados =recuperados;
+     this.fallecidos = fallecidos;
+   //  this.idPais = idPais;
    }
 }
