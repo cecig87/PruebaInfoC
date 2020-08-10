@@ -9,10 +9,14 @@
     <p class="lead">Aquí encontrarás y podrás agregar todos los datos actualizados sobre el Coronavirus</p>
     <hr class="my-4">
     <p>Comenzar</p>
-    <a class="btn btn-primary btn-lg"  role="button" (click)="onVer()">Ver lista</a>
-    <a class="btn btn-success btn-lg" role="button" (click)="onAdd()">Add country</a>
+    <div class="row">
+        <div class="col-xs-2">
+    <a class="btn btn-default btn-lg"  role="button" (click)="onVer()">Ver lista</a></div>
+    <div class="col-xs-1">
+    <a class="btn btn-primary btn-lg" role="button" (click)="onAdd()">Add country</a>
+</div> </div>
 </div>
 <br>
-<hr>
+
 <router-outlet></router-outlet>
 

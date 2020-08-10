@@ -15,8 +15,7 @@ constructor(private http: HttpService){};
   obtenerPaises () {
     this.http.obtenerPaises().subscribe((paises: Pais[]) => {
       this.datosPais = paises; 
-      console.log(this.datosPais);
-     
+          
       });
 };
 
@@ -34,8 +33,7 @@ constructor(private http: HttpService){};
       this.obtenerPaises();
       
       let elegido = this.datosPais.filter((pais) => {return pais.idPais === id});
-      console.log(elegido);
-     
+           
       return elegido[0];
  
      };     

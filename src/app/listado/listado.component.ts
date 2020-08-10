@@ -22,6 +22,8 @@ index: number;
 faTrashAlt = faTrashAlt;
 edit = faEdit;
 datosLista = true;
+cargar = false;
+masCarga = false;
 
 constructor(private listaServicio: ListaService, private router: Router, private route: ActivatedRoute, private httpServicio: HttpService) { };
 
@@ -29,6 +31,11 @@ constructor(private listaServicio: ListaService, private router: Router, private
      //this.susbcribirse = this.listaServicio.listaPaises.subscribe((listado: Pais[]) =>{this.dObtenidos = listado; 
       //});
     //this.onControlLista();
+    
+    this.cargar = true;
+    setTimeout(()=> {this.masCarga = true},650);
+    setTimeout(()=> {
+      
   this.susbcribirse = this.httpServicio.obtenerPaises().subscribe((paises: Pais[]) =>{console.log(paises);
     for(let i=0; i< paises.length; i++){    
    this.dObtenidos.push(paises[i]);
@@ -38,11 +45,13 @@ constructor(private listaServicio: ListaService, private router: Router, private
    
   }
    );
+  }, 2200);
+  setTimeout(() => { this.masCarga = false;
+  this.cargar = false;}, 2300)
  
   };
 
   onControlLista(){
-    console.log(this.dObtenidos.length);
      if(this.dObtenidos.length === 0){
       this.datosLista = false;
      }
@@ -67,8 +76,7 @@ constructor(private listaServicio: ListaService, private router: Router, private
     // let paisId =  this.dObtenidos.findIndex((nombre) => {return nombre.name === pais}); 
     let paisElegido= this.dObtenidos.filter((nombre) => {return nombre.name === pais});
     let paisId = paisElegido[0].idPais;
-   console.log(paisElegido);
-     this.router.navigate([ '../' , paisId, 'edit'], {relativeTo: this.route});
+    this.router.navigate([ '../' , paisId, 'edit'], {relativeTo: this.route});
    };
 
    onSearch() {

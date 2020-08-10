@@ -31,6 +31,9 @@ export class FormularioComponent implements OnInit, AfterContentInit {
    numInfect ;
    numRecovery ;
    numDead;
+   cargando = false;
+   cargaMas =false;
+   sinDatos = false;
 
   constructor(private listService: ListaService, private router: Router ,private route: ActivatedRoute, private httpService: HttpService) { }
 
@@ -44,11 +47,11 @@ export class FormularioComponent implements OnInit, AfterContentInit {
     'fallecidos': new FormControl(null, Validators.required)    
     });
     this.idCountry = +this.route.snapshot.params['id'];
-    console.log(this.idCountry);    
+        
     //if(this.idCountry != null){
     if( !isNaN(this.idCountry)) { 
     this.editado = true;
-        
+    
          this.onSetValue();
         
            };
@@ -60,40 +63,44 @@ export class FormularioComponent implements OnInit, AfterContentInit {
    };                 
              
     ngAfterContentInit(){ 
-                                                 //Obtener los datos de la base de datos si no se han obtenido
-        setTimeout(() => {console.log(this.actualizar);
-         if(this.aEditar) {                 
-            
-           this.onSetValue();
+                                        //Obtener los datos de la base de datos si no se han obtenido
+        setTimeout(() => {
+                   
+         if(this.aEditar) {     
+         // setTimeout(() => {           
+          //  this.cargaMas = true; 
+          // }, 1000);
+           this.onSetValue();                      
            this.aEditar = false;
-           console.log(this.actualizar);
+         
            if((this.actualizar===undefined) && this.editado){
-             
-               
+                            
            console.log("No se han podido obtener los datos.");
-           };};
-          }, 1521);     
+           this.sinDatos = true;     
+           };
+          this.cargando = false;
+        };
+          }, 1800);     
        }
 
       obtenerDatosPais() {
        this.actualizar= this.listService.obtenerPaisById(this.idCountry);
-                      
-            console.log(this.actualizar);  
+       this.cargando = true;   
           if(this.actualizar === undefined){
-                        
+                      
            
             this.name = '';
             this.numInfect = '';
             this.numRecovery = '';
             this.numDead = '';
-            
+            this.aEditar = true;
             } else{
                this.name = this.actualizar.name;                            
                this.numInfect = this.actualizar.infectados;
                this.numRecovery = this.actualizar.recuperados;
                this.numDead = this.actualizar.fallecidos;  
                };
-       this.aEditar = true;
+       
          }
       
      onSetValue(){
@@ -102,6 +109,10 @@ export class FormularioComponent implements OnInit, AfterContentInit {
        
         this.obtenerDatosPais();
       
+        setTimeout(() => {           
+          this.cargaMas = true; 
+         }, 1000);      
+
        setTimeout(() => {
           this.nombreInicial = this.name;
           this.formulario.setValue({                    
@@ -110,10 +121,12 @@ export class FormularioComponent implements OnInit, AfterContentInit {
            recuperados: this.numRecovery,
            fallecidos: this.numDead
           });
-          console.log(this.formulario.valid);
-         }, 1521);
+this.cargaMas = false;
+        this.cargando = false;
+         }, 1580);
       
         };
+        
     };
 
   onSubmit() {
@@ -128,7 +141,7 @@ export class FormularioComponent implements OnInit, AfterContentInit {
   
                
    const repeticion = this.paisesCantidad.filter(paisRepetido =>{ return datosForm.name === paisRepetido.name});
-  console.log(repeticion.length);
+  
     if(repeticion.length != 0 ) {
      if (!this.editado){ 
        this.repetido = true;
@@ -143,7 +156,9 @@ export class FormularioComponent implements OnInit, AfterContentInit {
 
         
     if(this.editado){
-      this.listService.updatePais(this.idCountry, datosForm);
+      const indice = this.paisesCantidad.findIndex((indPais) => {return indPais.idPais === this.idCountry});
+      console.log(indice);
+      this.listService.updatePais(indice, datosForm);
       //alert('Datos actualizados correctamente')
       console.log(this.paisesCantidad);
      
