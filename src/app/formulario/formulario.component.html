@@ -1,82 +1,156 @@
-
 <div class="container">
-   
   <div class="row">
     <div class="col-xs-6">
-      <h4 *ngIf="!editado">Ingrese los datos </h4>
-     <h4 *ngIf="editado">Actualice los datos del país seleccionado</h4>
-     
-     
-      <!--<button (click)="datosForm()">Formulario editar</button>-->
-     
-       <form [formGroup]="formulario" (ngSubmit)="onSubmit()" >
-         <div *ngIf="cargando" class="progress">
-         <div   class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
-         <!-- <span class="sr-only">50% completado</span>-->Cargando</div>
-         <div  *ngIf="cargaMas" class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%">
-          <span class="sr-only">30% completado</span></div>
-         </div>
-         <div class="form-group">
-           <label for="pais">País</label>
-           <input class="form-control" type="text" id="pais" formControlName="name">
-           <label for="cant">Cantidad de infectados</label>
-           <input class="form-control" type="number" id="cant" formControlName="infectados">
-           <label for="curados">Cantidad de recuperados</label>
-           <input id="curados" type="number" class="form-control" formControlName="recuperados">
-           <label for="dead">Cantidad de fallecidos</label>
-           <input id="dead" type="number" class="form-control" formControlName="fallecidos">
-         </div>
-         <hr>
-         <div class="form-group">
-           <div class="row">
-           <div class="col-md-2 ">
-            <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid" data-toggle="modal" data-target="#myModalSaved" (click)="showModal = true">Guardar</button>
-           </div>
-           <div class="col-md-2">
-           <button type="button" class="btn btn-danger" (click)="onCancelar()">Cancelar</button>
-          </div>
-          
-         </div>  
-         </div>
+      <h4 *ngIf="!editado">Ingrese los datos</h4>
+      <h4 *ngIf="editado">Actualice los datos del país seleccionado</h4>
 
-         <div class="modal" id="myModalSaved" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" [ngClass]="{'show': showModal}">
+      <!--<button (click)="datosForm()">Formulario editar</button>-->
+
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        <div *ngIf="cargando" class="progress">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            aria-valuenow="50"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            style="width: 50%;"
+          >
+            <!-- <span class="sr-only">50% completado</span>-->Cargando
+          </div>
+          <div
+            *ngIf="cargaMas"
+            class="progress-bar"
+            role="progressbar"
+            aria-valuenow="30"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            style="width: 30%;"
+          >
+            <span class="sr-only">30% completado</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="pais">País</label>
+          <input
+            class="form-control"
+            type="text"
+            id="pais"
+            formControlName="name"
+          />
+          <label for="cant">Cantidad de infectados</label>
+          <input
+            class="form-control"
+            type="number"
+            id="cant"
+            formControlName="infectados"
+          />
+          <label for="curados">Cantidad de recuperados</label>
+          <input
+            id="curados"
+            type="number"
+            class="form-control"
+            formControlName="recuperados"
+          />
+          <label for="dead">Cantidad de fallecidos</label>
+          <input
+            id="dead"
+            type="number"
+            class="form-control"
+            formControlName="fallecidos"
+          />
+        </div>
+        <hr />
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-2">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!formulario.valid"
+                data-toggle="modal"
+                data-target="#myModalSaved"
+                (click)="showModal = true"
+              >
+                Guardar
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="onCancelar()"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="modal"
+          id="myModalSaved"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="myModalLabel"
+          [ngClass]="{ show: showModal }"
+        >
           <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
               <div class="modal-header">
-          
-                <button *ngIf="guardado"type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal = false">
+                <button
+                  *ngIf="guardado"
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  (click)="showModal = false"
+                >
                   <span aria-hidden="true">&times;</span>
-               </button>
+                </button>
 
-               <button *ngIf="editado"type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal = false; onVolver()">
-                <span aria-hidden="true">&times;</span>
-             </button>
-               <h5 *ngIf="!repetido" class="modal-title" id="myModalLabel">Guardado</h5>
-               <h5 *ngIf="repetido" class="modal-title" id="myModalLabel">Mensaje</h5>
-             </div>
-             <div class="modal-body">
-             <p *ngIf="guardado && !repetido">El país se ha almacenado correctamente.</p>
-            <p *ngIf="actualizado && !repetido">Los datos se han actualizado correctamente.</p>
-            <p *ngIf="repetido">No se almacenaron los cambios porque este país ya existe.</p>
-             </div>
-             
+                <button
+                  *ngIf="editado"
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  (click)="showModal = false; onVolver()"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 *ngIf="!repetido" class="modal-title" id="myModalLabel">
+                  Guardado
+                </h5>
+                <h5 *ngIf="repetido" class="modal-title" id="myModalLabel">
+                  Mensaje
+                </h5>
+              </div>
+              <div class="modal-body">
+                <p *ngIf="guardado && !repetido">
+                  El país se ha almacenado correctamente.
+                </p>
+                <p *ngIf="actualizado && !repetido">
+                  Los datos se han actualizado correctamente.
+                </p>
+                <p *ngIf="repetido">
+                  No se almacenaron los cambios porque este país ya existe.
+                </p>
+              </div>
             </div>
-           </div>
-          
-         </div>
+          </div>
+        </div>
 
-         <!--<p *ngIf="guardado && !formulario.touched ">Los datos se guardaron correctamente!</p>-->
-         
-       </form>  
-       <div *ngIf="sinDatos" style= "color: red">No se han podido cargar los datos. Inténtelo de nuevo:</div>
-        
-              
-    <div routerLinkActive="active">
-    <a routerLink="/list">Ir al listado de países</a>
-   </div>
+        <!--<p *ngIf="guardado && !formulario.touched ">Los datos se guardaron correctamente!</p>-->
+      </form>
+      <div *ngIf="sinDatos" style="color: red;">
+        No se han podido cargar los datos. Inténtelo de nuevo:
+      </div>
 
+      <div routerLinkActive="active">
+        <a routerLink="/list">Ir al listado de países</a>
+      </div>
     </div>
-  
   </div>
-  <hr>
-  </div>
+  <hr />
+</div>

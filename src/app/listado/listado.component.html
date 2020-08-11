@@ -1,68 +1,137 @@
-<h4>Datos actualizados</h4> 
-<br>
-<div *ngIf="!datosLista" class="alert alert-info" role="alert">La lista se encuentra vacía.</div>
+<h4>Datos actualizados</h4>
+<br />
+<div *ngIf="!datosLista" class="alert alert-info" role="alert">
+  La lista se encuentra vacía.
+</div>
 
-<br>
+<br />
 <div *ngIf="datosLista" class="row">
   <div class="col-xs-3">
-       <input id="buscar" class="form-control" type="text" name="search" placeholder="Buscar" [(ngModel)]="buscado" (input)="onSearch()">
+    <input
+      id="buscar"
+      class="form-control"
+      type="text"
+      name="search"
+      placeholder="Buscar"
+      [(ngModel)]="buscado"
+      (input)="onSearch()"
+    />
   </div>
 </div>
-<br>
+<br />
 <div *ngIf="datosLista">
   <div *ngIf="cargar" class="progress">
-    <div   class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-        Cargando</div>
-    <div  *ngIf="masCarga" class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" style="width: 55%">
-     <span class="sr-only">55% completado</span></div>
+    <div
+      class="progress-bar"
+      role="progressbar"
+      aria-valuenow="40"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      style="width: 40%;"
+    >
+      Cargando
+    </div>
+    <div
+      *ngIf="masCarga"
+      class="progress-bar"
+      role="progressbar"
+      aria-valuenow="55"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      style="width: 55%;"
+    >
+      <span class="sr-only">55% completado</span>
+    </div>
   </div>
 </div>
 <table *ngIf="datosLista" class="table table-bordered table-hover">
-  <caption>Listado de paises infectados</caption>
-  
+  <caption>
+    Listado de paises infectados
+  </caption>
+
   <thead>
     <tr class="bg-info">
-      <th scope="col"> País</th>
+      <th scope="col">País</th>
       <th scope="col">Infectados</th>
-      <th scope="col">Recuperados</th> 
+      <th scope="col">Recuperados</th>
       <th scope="col">Fallecidos</th>
       <th scope="col">Acciones</th>
     </tr>
   </thead>
-  <tbody *ngFor="let paises of dObtenidos; let i= Index">
-     
+  <tbody *ngFor="let paises of dObtenidos; let i = Index">
     <tr>
-      
-         <td>{{paises.name}}</td>
-         <td>{{paises.infectados}}</td>
-         <td>{{paises.recuperados}}</td>
-         <td>{{paises.fallecidos}}</td>
-         <td><div class="col-xs-2"><button class="btn btn-danger" type="button" data-toggle="modal" data-target="#myModal" (click)="showModal = true; onEliminar(paises.name)"><fa-icon [icon] = "faTrashAlt"></fa-icon></button></div>
-              <div class="col-xs-2"><button class="btn btn-default" type="button" (click)="onEditar(paises.name)"><fa-icon [icon] = "edit"></fa-icon></button></div>
-          
-              <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" [ngClass]="{'show': showModal}">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal = false">
-                        <span aria-hidden="true">&times;</span>
-                     </button>
-                     <h5 class="modal-title" id="myModalLabel">Eliminar país</h5>
-                   </div>
-                   <div class="modal-body">
-                   <p>¿Está seguro que desea borrar ese país?</p>
-                   </div>
-                   <div class="modal-footer">
-                     <button type="button" class="btn btn-default" data-dismiss="modal" (click)="showModal = false">close</button>
-                     <button type="button" class="btn btn-primary"  (click)="showModal = false; onConfirmar()">Confirmar</button>
-                   </div>
-                  </div>
-                 </div>
-               </div>
-             
-         </td>
-     </tr>    
-  
+      <td>{{ paises.name }}</td>
+      <td>{{ paises.infectados }}</td>
+      <td>{{ paises.recuperados }}</td>
+      <td>{{ paises.fallecidos }}</td>
+      <td>
+        <div class="col-xs-2">
+          <button
+            class="btn btn-danger"
+            type="button"
+            data-toggle="modal"
+            data-target="#myModal"
+            (click)="showModal = true; onEliminar(paises.name)"
+          >
+            <fa-icon [icon]="faTrashAlt"></fa-icon>
+          </button>
+        </div>
+        <div class="col-xs-2">
+          <button
+            class="btn btn-default"
+            type="button"
+            (click)="onEditar(paises.name)"
+          >
+            <fa-icon [icon]="edit"></fa-icon>
+          </button>
+        </div>
+
+        <div
+          class="modal"
+          id="myModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="myModalLabel"
+          [ngClass]="{ show: showModal }"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  (click)="showModal = false"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="myModalLabel">Eliminar país</h5>
+              </div>
+              <div class="modal-body">
+                <p>¿Está seguro que desea borrar ese país?</p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal"
+                  (click)="showModal = false"
+                >
+                  close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="showModal = false; onConfirmar()"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
   </tbody>
 </table>
