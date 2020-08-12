@@ -21,8 +21,7 @@ export class ListadoComponent implements OnInit, OnDestroy {
   faTrashAlt = faTrashAlt;
   edit = faEdit;
   datosLista = true;
-  cargar = false;
-  masCarga = false;
+  estaCargando = false;
 
   constructor(
     private listaServicio: ListaService,
@@ -35,26 +34,17 @@ export class ListadoComponent implements OnInit, OnDestroy {
     //this.susbcribirse = this.listaServicio.listaPaises.subscribe((listado: Pais[]) =>{this.dObtenidos = listado;
     //});
     //this.onControlLista();
-
-    this.cargar = true;
-    setTimeout(() => {
-      this.masCarga = true;
-    }, 650);
-    setTimeout(() => {
-      this.susbcribirse = this.httpServicio
-        .obtenerPaises()
-        .subscribe((paises: Pais[]) => {
-          console.log(paises);
-          for (let i = 0; i < paises.length; i++) {
-            this.dObtenidos.push(paises[i]);
-          }
-          this.onControlLista();
-        });
-    }, 2200);
-    setTimeout(() => {
-      this.masCarga = false;
-      this.cargar = false;
-    }, 2300);
+    this.estaCargando = true;
+    this.susbcribirse = this.httpServicio
+      .obtenerPaises()
+      .subscribe((paises: Pais[]) => {
+        console.log(paises);
+        for (let i = 0; i < paises.length; i++) {
+          this.dObtenidos.push(paises[i]);
+        }
+        this.estaCargando = false;
+        this.onControlLista();
+      });
   }
 
   onControlLista() {
