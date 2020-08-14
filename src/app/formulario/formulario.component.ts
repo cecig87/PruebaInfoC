@@ -14,23 +14,22 @@ import { Subscription } from "rxjs";
 export class FormularioComponent implements OnInit, AfterContentInit {
   formulario: FormGroup;
   paisesCantidad: Pais[] = [];
+
+  name: string;
+  numInfect: number;
+  numRecovery: number;
+  numDead: number;
+
+  idCountry: number;
+  actualizar;
   guardado = false;
   editado = false;
-  idCountry: number;
-  paisEdit: Pais;
   actualizado = false;
   repetido = false;
   aEditar = false;
-  nombreInicial;
-  actualizar;
-  subscribirse: Subscription;
-  name;
-  numInfect;
-  numRecovery;
-  numDead;
-  cargando = false;
-  cargaMas = false;
-  sinDatos = false;
+  cargar = false;
+  sinDatos: boolean;
+  nombreInicial: string;
 
   constructor(
     private listService: ListaService,
@@ -44,17 +43,17 @@ export class FormularioComponent implements OnInit, AfterContentInit {
       name: new FormControl(null, Validators.required),
       infectados: new FormControl(null, [
         Validators.required,
-        Validators.pattern(/^[0-9]+[0-9]*$/),
+        Validators.pattern(/^[1-9]+[0-9]*$/),
       ]),
       recuperados: new FormControl(null, Validators.required),
       fallecidos: new FormControl(null, Validators.required),
     });
+
     this.idCountry = +this.route.snapshot.params["id"];
 
     //if(this.idCountry != null){
     if (!isNaN(this.idCountry)) {
       this.editado = true;
-
       this.onSetValue();
     }
 
@@ -74,19 +73,23 @@ export class FormularioComponent implements OnInit, AfterContentInit {
           console.log("No se han podido obtener los datos.");
           this.sinDatos = true;
         }
-        this.cargando = false;
+
+        this.cargar = false;
       }
-    }, 1800);
+    }, 2000);
   }
 
   obtenerDatosPais() {
     this.actualizar = this.listService.obtenerPaisById(this.idCountry);
-    this.cargando = true;
+
+    this.cargar = true;
+
     if (this.actualizar === undefined) {
       this.name = "";
-      this.numInfect = "";
-      this.numRecovery = "";
-      this.numDead = "";
+      this.numInfect = null;
+      this.numRecovery = null;
+      this.numDead = null;
+
       this.aEditar = true;
     } else {
       this.name = this.actualizar.name;
@@ -101,34 +104,32 @@ export class FormularioComponent implements OnInit, AfterContentInit {
       this.obtenerDatosPais();
 
       setTimeout(() => {
-        this.cargaMas = true;
-      }, 1000);
-
-      setTimeout(() => {
         this.nombreInicial = this.name;
+
         this.formulario.setValue({
           name: this.name,
           infectados: this.numInfect,
           recuperados: this.numRecovery,
           fallecidos: this.numDead,
         });
-        this.cargaMas = false;
-        this.cargando = false;
-      }, 1580);
+        this.cargar = false;
+      }, 1680);
     }
   }
 
   onSubmit() {
     this.repetido = false;
     console.log(this.formulario.value);
+
     const name = this.formulario.value.name;
     const cantInfect = this.formulario.value.infectados;
     const cantRecovery = this.formulario.value.recuperados;
     const cantDead = this.formulario.value.fallecidos;
-    console.log(this.formulario);
+
     const datosForm = new Pais(name, cantInfect, cantRecovery, cantDead);
 
     const repeticion = this.paisesCantidad.filter((paisRepetido) => {
+      //controlar país repetido
       return datosForm.name === paisRepetido.name;
     });
 
@@ -148,7 +149,7 @@ export class FormularioComponent implements OnInit, AfterContentInit {
       const indice = this.paisesCantidad.findIndex((indPais) => {
         return indPais.idPais === this.idCountry;
       });
-      console.log(indice);
+
       this.listService.updatePais(indice, datosForm);
       //alert('Datos actualizados correctamente')
       console.log(this.paisesCantidad);
@@ -172,7 +173,9 @@ export class FormularioComponent implements OnInit, AfterContentInit {
   }
 
   onVolver() {
-    this.router.navigate(["../../list"], { relativeTo: this.route });
+    setTimeout(() => {
+      this.router.navigate(["../../list"], { relativeTo: this.route });
+    }, 2000);
   }
 
   onCancelar() {
