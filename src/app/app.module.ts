@@ -7,15 +7,22 @@ import { ListadoComponent } from "./listado/listado.component";
 import { FormularioComponent } from "./formulario/formulario.component";
 import { Routes, RouterModule } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { BienvenidoComponent } from "./bienvenido/bienvenido.component";
 
 const routes: Routes = [
+  { path: "", component: BienvenidoComponent },
   { path: "new", component: FormularioComponent },
   { path: "list", component: ListadoComponent },
   { path: ":id/edit", component: FormularioComponent },
 ];
 
 @NgModule({
-  declarations: [AppComponent, ListadoComponent, FormularioComponent],
+  declarations: [
+    AppComponent,
+    ListadoComponent,
+    FormularioComponent,
+    BienvenidoComponent,
+  ],
   imports: [
     BrowserModule,
     FormsModule,
