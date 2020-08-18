@@ -6,10 +6,6 @@ import { Pais } from "./pais.model";
 export class HttpService {
   constructor(private http: HttpClient) {}
 
-  obtenerPaises() {
-    return this.http.get("http://localhost:8080/paises");
-  }
-
   ingresarPaises(nuevoPais: Pais) {
     const postData: Pais = nuevoPais;
     return this.http.post("http://localhost:8080/paises", postData);

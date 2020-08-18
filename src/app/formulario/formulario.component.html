@@ -1,13 +1,13 @@
-<div class="container">
+<div
+  class="container"
+  [ngStyle]="{
+    backgroundColor: editado ? 'seashell' : 'floralwhite'
+  }"
+>
   <div class="row">
     <div class="col-xs-6">
       <h4 *ngIf="!editado">Ingrese los datos</h4>
       <h4 *ngIf="editado">Actualice los datos del país seleccionado</h4>
-
-      <!--<button (click)="datosForm()">Formulario editar</button>-->
-      <div *ngIf="cargar">
-        <div class="carga"></div>
-      </div>
 
       <br />
       <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
@@ -129,7 +129,9 @@
       </div>
 
       <div routerLinkActive="active">
-        <a routerLink="/list">Ir al listado de países</a>
+        <a *ngIf="datosEnviados" routerLink="/list">Ir al listado de países</a>
+
+        <!--fijarme que en el de agregar país tengo que hacer que la primera vez también dse demore para ir al listado-->
       </div>
     </div>
   </div>

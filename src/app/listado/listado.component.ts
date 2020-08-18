@@ -15,13 +15,15 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 export class ListadoComponent implements OnInit, OnDestroy {
   dObtenidos: Pais[] = [];
   susbcribirse: Subscription;
+
   editando = false;
+  datosLista = true;
+  estaCargando = false;
+
   buscado: string;
   index: number;
   faTrashAlt = faTrashAlt;
   edit = faEdit;
-  datosLista = true;
-  estaCargando = false;
 
   constructor(
     private listaServicio: ListaService,
@@ -35,19 +37,19 @@ export class ListadoComponent implements OnInit, OnDestroy {
     //});
     //this.onControlLista();
     this.estaCargando = true;
-    this.susbcribirse = this.httpServicio
+    this.susbcribirse = this.listaServicio
       .obtenerPaises()
       .subscribe((paises: Pais[]) => {
         console.log(paises);
         for (let i = 0; i < paises.length; i++) {
           this.dObtenidos.push(paises[i]);
         }
-        this.estaCargando = false;
         this.onControlLista();
       });
   }
 
   onControlLista() {
+    this.estaCargando = false;
     if (this.dObtenidos.length === 0) {
       this.datosLista = false;
     }
@@ -71,7 +73,6 @@ export class ListadoComponent implements OnInit, OnDestroy {
 
   onEditar(pais: string) {
     this.editando = true;
-    // let paisId =  this.dObtenidos.findIndex((nombre) => {return nombre.name === pais});
     let paisElegido = this.dObtenidos.filter((nombre) => {
       return nombre.name === pais;
     });

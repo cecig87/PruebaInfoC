@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Pais } from "./pais.model";
 import { HttpService } from "./http.service";
+import { HttpClient } from "@angular/common/http";
+import { map } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })
 export class ListaService {
@@ -9,12 +11,15 @@ export class ListaService {
   actualizandoPais = new BehaviorSubject<Pais[]>([]);
   datosPais: Pais[] = [];
 
-  constructor(private http: HttpService) {}
+  constructor(private http: HttpClient) {}
 
   obtenerPaises() {
-    this.http.obtenerPaises().subscribe((paises: Pais[]) => {
-      this.datosPais = paises;
-    });
+    return this.http.get("http://localhost:8080/paises").pipe(
+      map((paises: Pais[]) => {
+        this.datosPais = paises;
+        return this.datosPais;
+      })
+    );
   }
 
   agregarPais(pais: Pais) {

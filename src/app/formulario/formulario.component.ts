@@ -11,7 +11,7 @@ import { Subscription } from "rxjs";
   templateUrl: "./formulario.component.html",
   styleUrls: ["./formulario.component.css"],
 })
-export class FormularioComponent implements OnInit, AfterContentInit {
+export class FormularioComponent implements OnInit {
   formulario: FormGroup;
   paisesCantidad: Pais[] = [];
 
@@ -28,6 +28,7 @@ export class FormularioComponent implements OnInit, AfterContentInit {
   repetido = false;
   aEditar = false;
   cargar = false;
+  datosEnviados = false;
   sinDatos: boolean;
   nombreInicial: string;
 
@@ -57,38 +58,21 @@ export class FormularioComponent implements OnInit, AfterContentInit {
       this.onSetValue();
     }
 
-    this.httpService.obtenerPaises().subscribe((paises: Pais[]) => {
+    this.listService.obtenerPaises().subscribe((paises: Pais[]) => {
       this.paisesCantidad = paises;
     });
   }
 
-  ngAfterContentInit() {
-    //Obtener los datos de la base de datos si no se han obtenido
-    setTimeout(() => {
-      if (this.aEditar) {
-        this.onSetValue();
-        this.aEditar = false;
-
-        if (this.actualizar === undefined && this.editado) {
-          console.log("No se han podido obtener los datos.");
-          this.sinDatos = true;
-        }
-
-        this.cargar = false;
-      }
-    }, 2000);
-  }
-
   obtenerDatosPais() {
     this.actualizar = this.listService.obtenerPaisById(this.idCountry);
-
-    this.cargar = true;
 
     if (this.actualizar === undefined) {
       this.name = "";
       this.numInfect = null;
       this.numRecovery = null;
       this.numDead = null;
+      console.log("No se han podido obtener los datos.");
+      this.sinDatos = true;
 
       this.aEditar = true;
     } else {
@@ -103,23 +87,19 @@ export class FormularioComponent implements OnInit, AfterContentInit {
     if (this.editado) {
       this.obtenerDatosPais();
 
-      setTimeout(() => {
-        this.nombreInicial = this.name;
+      this.nombreInicial = this.name;
 
-        this.formulario.setValue({
-          name: this.name,
-          infectados: this.numInfect,
-          recuperados: this.numRecovery,
-          fallecidos: this.numDead,
-        });
-        this.cargar = false;
-      }, 1680);
+      this.formulario.setValue({
+        name: this.name,
+        infectados: this.numInfect,
+        recuperados: this.numRecovery,
+        fallecidos: this.numDead,
+      });
     }
   }
 
   onSubmit() {
     this.repetido = false;
-    console.log(this.formulario.value);
 
     const name = this.formulario.value.name;
     const cantInfect = this.formulario.value.infectados;
@@ -150,22 +130,23 @@ export class FormularioComponent implements OnInit, AfterContentInit {
         return indPais.idPais === this.idCountry;
       });
 
-      this.listService.updatePais(indice, datosForm);
-      //alert('Datos actualizados correctamente')
-      console.log(this.paisesCantidad);
+      //console.log(this.paisesCantidad);
 
       this.httpService
         .modificarDatos(this.idCountry, datosForm)
         .subscribe((responseDatos) => {
           console.log(responseDatos);
+          this.listService.updatePais(indice, datosForm);
+          this.datosEnviados = true;
         });
 
       this.actualizado = true;
     } else {
       this.paisesCantidad.push(datosForm);
-      this.listService.agregarPais(datosForm);
       this.httpService.ingresarPaises(datosForm).subscribe((responseData) => {
         console.log(responseData);
+        this.listService.agregarPais(datosForm);
+        this.datosEnviados = true;
       });
       this.guardado = true;
     }
@@ -173,9 +154,19 @@ export class FormularioComponent implements OnInit, AfterContentInit {
   }
 
   onVolver() {
-    setTimeout(() => {
+    if (this.datosEnviados) {
       this.router.navigate(["../../list"], { relativeTo: this.route });
-    }, 2000);
+    } else {
+      setTimeout(() => {
+        this.router.navigate(["../../list"], { relativeTo: this.route });
+      }, 2100);
+    }
+    console.log(this.datosEnviados);
+    this.datosEnviados = false;
+  }
+
+  aListado() {
+    this.datosEnviados = false;
   }
 
   onCancelar() {

@@ -13,11 +13,9 @@ export class BienvenidoComponent implements OnInit {
 
   onAdd() {
     this.router.navigate(["/new"], { relativeTo: this.route });
-    //this.outPrincipal = false;
   }
 
   onVer() {
     this.router.navigate(["/list"], { relativeTo: this.route });
-    //this.outPrincipal = false;
   }
 }

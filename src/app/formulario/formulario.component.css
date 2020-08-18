@@ -6,37 +6,3 @@ input.ng-invalid.ng-touched {
   display: block;
   background-color: darkgrey;
 }
-
-.carga {
-  font-weight: bold;
-  font-size: medium;
-  color: royalblue;
-  position: relative;
-  top: 180px;
-  margin: auto;
-  width: 40px;
-  height: 40px;
-  border: 6px solid rgb(17, 0, 255);
-  border-radius: 50%;
-  border-top: 6px solid navy;
-  animation: cargando 0.7s infinite ease-in-out;
-}
-
-@keyframes cargando {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  25% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.puntos {
-  color: rgb(59, 26, 204);
-
-  margin-top: 40px;
-}
