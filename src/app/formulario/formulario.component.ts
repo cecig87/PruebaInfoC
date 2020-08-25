@@ -154,19 +154,18 @@ export class FormularioComponent implements OnInit {
   }
 
   onVolver() {
-    if (this.datosEnviados) {
+    if (this.editado) {
       this.router.navigate(["../../list"], { relativeTo: this.route });
     } else {
-      setTimeout(() => {
-        this.router.navigate(["../../list"], { relativeTo: this.route });
-      }, 2100);
+      this.repetido = false;
     }
+    // setTimeout(() => {
+    //  this.router.navigate(["../../list"], { relativeTo: this.route });
+    //  }, 2100);
+
     console.log(this.datosEnviados);
     this.datosEnviados = false;
-  }
-
-  aListado() {
-    this.datosEnviados = false;
+    this.guardado = false;
   }
 
   onCancelar() {

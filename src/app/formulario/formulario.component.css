@@ -6,3 +6,13 @@ input.ng-invalid.ng-touched {
   display: block;
   background-color: darkgrey;
 }
+
+.modal-dialog {
+  width: fit-content;
+  display: block;
+  position: absolute;
+  background-color: blueviolet;
+  color: cornflowerblue;
+  bottom: 250px;
+  left: 220px;
+}

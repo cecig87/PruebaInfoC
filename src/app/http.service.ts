@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Pais } from "./pais.model";
+import { mergeMap } from "rxjs/operators";
+import { timer } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class HttpService {
@@ -13,7 +15,11 @@ export class HttpService {
 
   modificarDatos(id: number, paisActual: Pais) {
     const putData: Pais = paisActual;
-    return this.http.put("http://localhost:8080/paises/" + id, putData);
+    return timer(5000).pipe(
+      mergeMap(() =>
+        this.http.put("http://localhost:8080/paises/" + id, putData)
+      )
+    );
   }
 
   eliminarPais(id: number) {

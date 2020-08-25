@@ -49,9 +49,6 @@
                 type="submit"
                 class="btn btn-primary"
                 [disabled]="!formulario.valid"
-                data-toggle="modal"
-                data-target="#myModalSaved"
-                (click)="showModal = true"
               >
                 Guardar
               </button>
@@ -60,6 +57,7 @@
               <button
                 type="button"
                 class="btn btn-danger"
+                [disabled]="!datosEnviados && (guardado || actualizado)"
                 (click)="onCancelar()"
               >
                 Cancelar
@@ -68,70 +66,88 @@
           </div>
         </div>
 
-        <div
+        <!--<div
+          
+          data-toggle="modal"
+          data-target="#myModalSaved"
+        ></div>-->
+        <!--<div
           class="modal"
           id="myModalSaved"
           tabindex="-1"
           role="dialog"
           aria-labelledby="myModalLabel"
           [ngClass]="{ show: showModal }"
-        >
-          <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button
-                  *ngIf="guardado"
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  (click)="showModal = false"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+        >-->
 
-                <button
-                  *ngIf="editado"
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                  (click)="showModal = false; onVolver()"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 *ngIf="!repetido" class="modal-title" id="myModalLabel">
-                  Guardado
-                </h5>
-                <h5 *ngIf="repetido" class="modal-title" id="myModalLabel">
-                  Mensaje
-                </h5>
-              </div>
-              <div class="modal-body">
-                <p *ngIf="guardado && !repetido">
-                  El país se ha almacenado correctamente.
-                </p>
-                <p *ngIf="actualizado && !repetido">
-                  Los datos se han actualizado correctamente.
-                </p>
-                <p *ngIf="repetido">
-                  No se almacenaron los cambios porque este país ya existe.
-                </p>
-              </div>
+        <div
+          *ngIf="datosEnviados || repetido"
+          class="modal-dialog modal-sm"
+          role="document"
+        >
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                *ngIf="guardado"
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                (click)="showModal = false; onVolver()"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+              <button
+                *ngIf="editado"
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                (click)="showModal = false; onVolver()"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h5 *ngIf="!repetido" class="modal-title" id="myModalLabel">
+                Guardado
+              </h5>
+              <h5 *ngIf="repetido" class="modal-title" id="myModalLabel">
+                Mensaje
+              </h5>
+            </div>
+            <div class="modal-body">
+              <p *ngIf="guardado && !repetido">
+                El país se ha almacenado correctamente.
+              </p>
+              <p *ngIf="actualizado && !repetido">
+                Los datos se han actualizado correctamente.
+              </p>
+              <p *ngIf="repetido">
+                No se almacenaron los cambios porque este país ya existe.
+              </p>
             </div>
           </div>
         </div>
+        <!--</div>-->
 
         <!--<p *ngIf="guardado && !formulario.touched ">Los datos se guardaron correctamente!</p>-->
       </form>
+
+      <button
+        type="button"
+        data-toggle="modal"
+        data-target="#myModalSaved"
+        (click)="showModal = true"
+      >
+        modal
+      </button>
+
       <div *ngIf="sinDatos" style="color: red;">
         No se han podido cargar los datos. Inténtelo de nuevo.
       </div>
 
       <div routerLinkActive="active">
-        <a *ngIf="datosEnviados" routerLink="/list">Ir al listado de países</a>
-
-        <!--fijarme que en el de agregar país tengo que hacer que la primera vez también dse demore para ir al listado-->
+        <a routerLink="/list">Ir al listado de países</a>
       </div>
     </div>
   </div>
