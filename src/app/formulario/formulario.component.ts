@@ -30,6 +30,7 @@ export class FormularioComponent implements OnInit {
   cargar = false;
   datosEnviados = false;
   sinDatos: boolean;
+  showModal: boolean;
   nombreInicial: string;
 
   constructor(
@@ -138,6 +139,7 @@ export class FormularioComponent implements OnInit {
           console.log(responseDatos);
           this.listService.updatePais(indice, datosForm);
           this.datosEnviados = true;
+          this.showModal = true;
         });
 
       this.actualizado = true;
@@ -147,6 +149,7 @@ export class FormularioComponent implements OnInit {
         console.log(responseData);
         this.listService.agregarPais(datosForm);
         this.datosEnviados = true;
+        this.showModal = true;
       });
       this.guardado = true;
     }
@@ -166,6 +169,7 @@ export class FormularioComponent implements OnInit {
     console.log(this.datosEnviados);
     this.datosEnviados = false;
     this.guardado = false;
+    this.showModal = false;
   }
 
   onCancelar() {

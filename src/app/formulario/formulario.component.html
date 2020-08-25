@@ -81,7 +81,7 @@
         >-->
 
         <div
-          *ngIf="datosEnviados || repetido"
+          *ngIf="showModal || repetido"
           class="modal-dialog modal-sm"
           role="document"
         >
@@ -93,7 +93,7 @@
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                (click)="showModal = false; onVolver()"
+                (click)="onVolver()"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -104,7 +104,7 @@
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                (click)="showModal = false; onVolver()"
+                (click)="onVolver()"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -127,20 +127,11 @@
               </p>
             </div>
           </div>
+          <!--</div>-->
         </div>
-        <!--</div>-->
 
         <!--<p *ngIf="guardado && !formulario.touched ">Los datos se guardaron correctamente!</p>-->
       </form>
-
-      <button
-        type="button"
-        data-toggle="modal"
-        data-target="#myModalSaved"
-        (click)="showModal = true"
-      >
-        modal
-      </button>
 
       <div *ngIf="sinDatos" style="color: red;">
         No se han podido cargar los datos. Inténtelo de nuevo.
