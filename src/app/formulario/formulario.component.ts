@@ -50,7 +50,9 @@ export class FormularioComponent implements OnInit {
       recuperados: new FormControl(null, Validators.required),
       fallecidos: new FormControl(null, Validators.required),
     });
-
+    this.listService.obtenerPaises().subscribe((paises: Pais[]) => {
+      this.paisesCantidad = paises;
+    });
     this.idCountry = +this.route.snapshot.params["id"];
 
     //if(this.idCountry != null){
@@ -58,14 +60,14 @@ export class FormularioComponent implements OnInit {
       this.editado = true;
       this.onSetValue();
     }
-
-    this.listService.obtenerPaises().subscribe((paises: Pais[]) => {
-      this.paisesCantidad = paises;
-    });
   }
 
   obtenerDatosPais() {
     this.actualizar = this.listService.obtenerPaisById(this.idCountry);
+    //.subscribe((datosActualizar: Pais) => {
+    //this.actualizar = datosActualizar;
+    // console.log(this.actualizar);
+    //});
 
     if (this.actualizar === undefined) {
       this.name = "";
@@ -146,6 +148,7 @@ export class FormularioComponent implements OnInit {
     } else {
       this.paisesCantidad.push(datosForm);
       this.httpService.ingresarPaises(datosForm).subscribe((responseData) => {
+        //mirar lo que va ala lista servicio.
         console.log(responseData);
         this.listService.agregarPais(datosForm);
         this.datosEnviados = true;

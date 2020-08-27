@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Pais } from "./pais.model";
 import { HttpService } from "./http.service";
@@ -24,6 +24,7 @@ export class ListaService {
 
   agregarPais(pais: Pais) {
     this.datosPais = [...this.datosPais, pais];
+
     this.listaPaises.next(this.datosPais);
   }
 
@@ -32,13 +33,25 @@ export class ListaService {
     this.listaPaises.next(this.datosPais);
   }
 
-  obtenerPaisById(id: number) {
-    this.obtenerPaises();
-
-    let elegido = this.datosPais.filter((pais) => {
-      return pais.idPais === id;
+  obteniendoPais() {
+    this.obtenerPaises().subscribe((paisEdit: Pais[]) => {
+      this.datosPais = paisEdit;
     });
+  }
 
-    return elegido[0];
+  obtenerPaisById(id: number) {
+    let elegido: Pais[];
+    return this.obtenerPaises().pipe(
+      map((paisEdit: Pais[]) => {
+        //  this.datosPais = paisEdit;
+        elegido = paisEdit.filter((pais) => {
+          return pais.idPais === id;
+        });
+        console.log(elegido);
+        return elegido[0];
+      })
+    );
+
+    // return elegido;
   }
 }
