@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, AfterContentInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Pais } from "../pais.model";
 import { ListaService } from "../lista.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpService } from "../http.service";
-import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-formulario",
@@ -15,18 +14,11 @@ export class FormularioComponent implements OnInit {
   formulario: FormGroup;
   paisesCantidad: Pais[] = [];
 
-  name: string;
-  numInfect: number;
-  numRecovery: number;
-  numDead: number;
-
   idCountry: number;
-  actualizar;
   guardado = false;
   editado = false;
   actualizado = false;
   repetido = false;
-  aEditar = false;
   cargar = false;
   datosEnviados = false;
   sinDatos: boolean;
@@ -41,6 +33,16 @@ export class FormularioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initForm();
+
+    this.listService.obtenerPaises().subscribe((paises: Pais[]) => {
+      this.paisesCantidad = paises;
+    });
+
+    this.cargarPaisEdit();
+  }
+
+  initForm() {
     this.formulario = new FormGroup({
       name: new FormControl(null, Validators.required),
       infectados: new FormControl(null, [
@@ -50,55 +52,32 @@ export class FormularioComponent implements OnInit {
       recuperados: new FormControl(null, Validators.required),
       fallecidos: new FormControl(null, Validators.required),
     });
-    this.listService.obtenerPaises().subscribe((paises: Pais[]) => {
-      this.paisesCantidad = paises;
-    });
+  }
+
+  cargarPaisEdit() {
     this.idCountry = +this.route.snapshot.params["id"];
 
-    //if(this.idCountry != null){
-    if (!isNaN(this.idCountry)) {
-      this.editado = true;
-      this.onSetValue();
+    this.editado = this.idCountry && !isNaN(this.idCountry);
+    if (!this.editado) {
+      return;
     }
-  }
 
-  obtenerDatosPais() {
-    this.actualizar = this.listService.obtenerPaisById(this.idCountry);
-    //.subscribe((datosActualizar: Pais) => {
-    //this.actualizar = datosActualizar;
-    // console.log(this.actualizar);
-    //});
+    this.listService.obtenerPaisById(this.idCountry).subscribe((pais) => {
+      if (!pais) {
+        console.log("No se han podido obtener los datos.");
+        this.sinDatos = true;
+        return;
+      }
 
-    if (this.actualizar === undefined) {
-      this.name = "";
-      this.numInfect = null;
-      this.numRecovery = null;
-      this.numDead = null;
-      console.log("No se han podido obtener los datos.");
-      this.sinDatos = true;
+      this.nombreInicial = pais.name;
 
-      this.aEditar = true;
-    } else {
-      this.name = this.actualizar.name;
-      this.numInfect = this.actualizar.infectados;
-      this.numRecovery = this.actualizar.recuperados;
-      this.numDead = this.actualizar.fallecidos;
-    }
-  }
-
-  onSetValue() {
-    if (this.editado) {
-      this.obtenerDatosPais();
-
-      this.nombreInicial = this.name;
-
-      this.formulario.setValue({
-        name: this.name,
-        infectados: this.numInfect,
-        recuperados: this.numRecovery,
-        fallecidos: this.numDead,
+      this.formulario.patchValue({
+        name: pais.name,
+        infectados: pais.infectados,
+        recuperados: pais.recuperados,
+        fallecidos: pais.fallecidos,
       });
-    }
+    });
   }
 
   onSubmit() {

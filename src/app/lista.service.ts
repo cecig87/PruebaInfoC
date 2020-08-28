@@ -1,7 +1,6 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Pais } from "./pais.model";
-import { HttpService } from "./http.service";
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 
@@ -40,18 +39,8 @@ export class ListaService {
   }
 
   obtenerPaisById(id: number) {
-    let elegido: Pais[];
     return this.obtenerPaises().pipe(
-      map((paisEdit: Pais[]) => {
-        //  this.datosPais = paisEdit;
-        elegido = paisEdit.filter((pais) => {
-          return pais.idPais === id;
-        });
-        console.log(elegido);
-        return elegido[0];
-      })
+      map((paisEdit: Pais[]) => paisEdit.find((pais) => pais.idPais === id))
     );
-
-    // return elegido;
   }
 }
