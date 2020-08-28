@@ -16,7 +16,6 @@ export class ListadoComponent implements OnInit, OnDestroy {
   dObtenidos: Pais[] = [];
   susbcribirse: Subscription;
 
-  editando = false;
   datosLista = true;
   estaCargando = false;
 
@@ -71,13 +70,10 @@ export class ListadoComponent implements OnInit, OnDestroy {
     this.onControlLista();
   }
 
-  onEditar(pais: string) {
-    this.editando = true;
-    let paisElegido = this.dObtenidos.filter((nombre) => {
-      return nombre.name === pais;
+  onEditar(pais: Pais) {
+    this.router.navigate(["../", pais.idPais, "edit"], {
+      relativeTo: this.route,
     });
-    let paisId = paisElegido[0].idPais;
-    this.router.navigate(["../", paisId, "edit"], { relativeTo: this.route });
   }
 
   onSearch() {
